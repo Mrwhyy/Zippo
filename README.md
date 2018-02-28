@@ -1,0 +1,20 @@
+# Zippo
+#-*-coding:utf-8-*- #用中文解释代码
+import dicom
+import os
+import numpy
+
+PathDicom = "C667749_20150225_CT_3_142"
+lstFilesDCM = []  # create an empty list
+for dirName, subdirList, fileList in os.walk(PathDicom):
+    for filename in fileList:
+        if ".dcm" in filename.lower():  # check whether the file's DICOM
+            lstFilesDCM.append(os.path.join(dirName, filename))
+
+            # Get ref file
+RefDs = dicom.read_file(lstFilesDCM[0])
+
+spacing = RefDs.PixelSpacing
+ST = RefDs.SliceThickness
+spacing.insert(2,str(ST))
+print spacing
